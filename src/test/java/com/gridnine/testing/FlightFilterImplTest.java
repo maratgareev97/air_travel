@@ -8,19 +8,18 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class FlightFilterImplTest {
-
     @Test
     public void testFilterFlightsDepartingBeforeNow() {
         // Arrange
-        LocalDateTime timeBefore = LocalDateTime.now();
+        LocalDateTime timeBefore = LocalDateTime.now().plusDays(3);  // Сдвигаем время на 3 дня вперед
         List<Flight> flights = FlightBuilder.createFlights();
         FlightFilter flightFilter = new FlightFilterImpl();
 
         // Act
-        List<Segment> filteredSegments = flightFilter.filterFlightsDepartingBeforeNow(flights.get(0).getSegments(), timeBefore);
+        List<Flight> filteredFlights = flightFilter.filterFlightsDepartingBeforeNow(flights, timeBefore);
 
         // Assert
-        assertEquals(0, filteredSegments.size()); // Ожидаем, что будет один перелёт
+        assertEquals(5, filteredFlights.size()); // Ожидаем, что будет исключен один перелет
     }
 
     @Test
@@ -30,10 +29,10 @@ public class FlightFilterImplTest {
         FlightFilter flightFilter = new FlightFilterImpl();
 
         // Act
-        List<Segment> filteredSegments = flightFilter.filterFlightsWithArrivalBeforeDeparture(flights.get(3).getSegments());
+        List<Flight> filteredFlights = flightFilter.filterFlightsWithArrivalBeforeDeparture(flights);
 
         // Assert
-        assertEquals(1, filteredSegments.size()); // Ожидаем, что будет один перелёт
+        assertEquals(5, filteredFlights.size()); // Ожидаем, что будет исключен один перелет
     }
 
     @Test
@@ -43,9 +42,10 @@ public class FlightFilterImplTest {
         FlightFilter flightFilter = new FlightFilterImpl();
 
         // Act
-        List<Segment> filteredSegments = flightFilter.filterFlightsWithExcessiveGroundTime(flights.get(4).getSegments());
+        List<Flight> filteredFlights = flightFilter.filterFlightsWithExcessiveGroundTime(flights);
 
         // Assert
-        assertEquals(2, filteredSegments.size()); // Ожидаем, что будет четыре перелёта
+        // Проверяем количество перелетов, прошедших через фильтр, адаптируйте ожидаемое значение согласно вашей логике
+        assertEquals(4, filteredFlights.size());
     }
 }

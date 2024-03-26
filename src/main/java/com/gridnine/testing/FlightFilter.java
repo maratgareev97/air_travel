@@ -4,11 +4,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface FlightFilter {
-    public List<Segment> filterFlightsDepartingBeforeNow(List<Segment> list, LocalDateTime timeBefore);
+    public List<Flight> filterFlightsDepartingBeforeNow(List<Flight> flights, LocalDateTime timeBefore);
+//    public List<Segment> filterFlightsDepartingBeforeNow(List<Segment> list, LocalDateTime timeBefore);
 
-    public List<Segment> filterFlightsWithArrivalBeforeDeparture(List<Segment> segments);
+    public List<Flight> filterFlightsWithArrivalBeforeDeparture(List<Flight> flights);
+//    public List<Segment> filterFlightsWithArrivalBeforeDeparture(List<Segment> segments);
 
-    public List<Segment> filterFlightsWithExcessiveGroundTime(List<Segment> segments);
+    public List<Flight> filterFlightsWithExcessiveGroundTime(List<Flight> flights);
+//    public List<Segment> filterFlightsWithExcessiveGroundTime(List<Segment> segments);
 //    List<Flight> filterFlights(List<Flight> flights);
 
 }

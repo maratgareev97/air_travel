@@ -11,97 +11,70 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) {
-        // Создаем объекты Segment
-//        Segment segment1 = new Segment(LocalDateTime.of(2024, 3, 25, 10, 0), LocalDateTime.of(2024, 3, 25, 12, 0));
-//        Segment segment2 = new Segment(LocalDateTime.of(2024, 3, 25, 13, 0), LocalDateTime.of(2024, 3, 25, 15, 0));
-//        Segment segment11 = new Segment(LocalDateTime.of(2024, 3, 25, 10, 0), LocalDateTime.of(2024, 3, 25, 12, 0));
-//        Segment segment12 = new Segment(LocalDateTime.of(2024, 3, 25, 13, 0), LocalDateTime.of(2024, 3, 25, 15, 0));
-//        Segment segment3 = new Segment(LocalDateTime.of(2024, 3, 26, 10, 0), LocalDateTime.of(2024, 3, 26, 12, 0));
-//        Segment segment4 = new Segment(LocalDateTime.of(2024, 3, 26, 13, 0), LocalDateTime.of(2024, 3, 26, 15, 0));
-//        Segment segment5 = new Segment(LocalDateTime.of(2024, 3, 27, 10, 0), LocalDateTime.of(2024, 3, 27, 12, 0));
-//        Segment segment6 = new Segment(LocalDateTime.of(2024, 3, 27, 13, 0), LocalDateTime.of(2024, 3, 27, 15, 0));
-//        Segment segment7 = new Segment(LocalDateTime.of(2024, 3, 28, 10, 0), LocalDateTime.of(2024, 3, 28, 12, 0));
-//        Segment segment8 = new Segment(LocalDateTime.of(2024, 3, 28, 13, 0), LocalDateTime.of(2024, 3, 28, 15, 0));
-//        Segment segment9 = new Segment(LocalDateTime.of(2024, 3, 29, 10, 0), LocalDateTime.of(2024, 3, 29, 12, 0));
-//        Segment segment10 = new Segment(LocalDateTime.of(2024, 3, 29, 13, 0), LocalDateTime.of(2023, 3, 29, 15, 0));
+
+//        // Создаем список перелетов
+//        List<Flight> flights = FlightBuilder.createFlights();
 //
-//        // Создаем список сегментов для Flight
-//        List<Segment> segments = new ArrayList<>(List.of(segment1, segment2, segment3, segment4, segment5, segment6, segment7, segment8, segment9, segment10, segment11, segment12));
-//
-//        // Создаем объект Flight
-//        Flight flight = new Flight(segments);
+//        // Создаем объект FlightFilterImpl
 //        FlightFilter flightFilter = new FlightFilterImpl();
+//
+//        // Получаем текущее время
+//        LocalDateTime timeBefore = LocalDateTime.now();
 //
 //        // Выводим информацию о перелете
 //        System.out.println("Перелет:");
-//        for (Segment segment : flight.getSegments()) {
-//            System.out.println("Вылет: " + segment.getDepartureDate() + ", Прилет: " + segment.getArrivalDate());
+//        for (Flight flight : flights) {
+//            for (Segment segment : flight.getSegments()) {
+//                System.out.println("Вылет: " + segment.getDepartureDate() + ", Прилет: " + segment.getArrivalDate());
+//            }
 //        }
 //
-//
 //        System.out.println("-----вылет до текущего момента времени----");
-//        LocalDateTime timeBefore = LocalDateTime.of(2024, 3, 27, 12, 0);
-//        System.out.println(flightFilter.filterFlightsDepartingBeforeNow(segments,timeBefore));
 //
+//        // Получаем список сегментов из списка перелетов
+//        List<Segment> allSegments = flights.stream()
+//                .flatMap(flight -> flight.getSegments().stream())
+//                .collect(Collectors.toList());
+//
+//        // Фильтруем перелеты с вылетом до текущего момента времени
+//        System.out.println(flightFilter.filterFlightsDepartingBeforeNow(allSegments, timeBefore));
 //
 //        System.out.println("-----имеются сегменты с датой прилёта раньше даты вылета---");
-//        System.out.println(flightFilter.filterFlightsWithArrivalBeforeDeparture(segments));
+//
+//        // Фильтруем перелеты с сегментами, где дата прилета раньше даты вылета
+//        System.out.println(flightFilter.filterFlightsWithArrivalBeforeDeparture(allSegments));
 //
 //        System.out.println("-----------------------------");
-//        System.out.println(flightFilter.filterFlightsWithExcessiveGroundTime(segments));
+//
+//        // Фильтруем перелеты с излишним временем на земле
+//        System.out.println(flightFilter.filterFlightsWithExcessiveGroundTime(allSegments));
+//    }
 
-        // Создаем список перелетов
         List<Flight> flights = FlightBuilder.createFlights();
-
-        // Создаем объект FlightFilterImpl
         FlightFilter flightFilter = new FlightFilterImpl();
 
-        // Получаем текущее время
-        LocalDateTime timeBefore = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println("Текущее время: " + now);
 
-        // Выводим информацию о перелете
-        System.out.println("Перелет:");
-        for (Flight flight : flights) {
-            for (Segment segment : flight.getSegments()) {
-                System.out.println("Вылет: " + segment.getDepartureDate() + ", Прилет: " + segment.getArrivalDate());
-            }
-        }
+        // Выводим начальный список перелётов
+        System.out.println("Исходные перелеты:");
+        flights.forEach(flight -> System.out.println(flight));
 
-        System.out.println("-----вылет до текущего момента времени----");
+        // Применяем и выводим результаты фильтра "вылет до текущего момента времени"
+        System.out.println("\nПерелеты, исключенные фильтром 'вылет до текущего момента времени':");
+        List<Flight> filteredByDepartureBeforeNow = flightFilter.filterFlightsDepartingBeforeNow(flights, now);
+        filteredByDepartureBeforeNow.forEach(System.out::println);
 
-        // Получаем список сегментов из списка перелетов
-        List<Segment> allSegments = flights.stream()
-                .flatMap(flight -> flight.getSegments().stream())
-                .collect(Collectors.toList());
+        // Применяем и выводим результаты фильтра "имеются сегменты с датой прилёта раньше даты вылета"
+        System.out.println("\nПерелеты, исключенные фильтром 'имеются сегменты с датой прилёта раньше даты вылета':");
+        List<Flight> filteredByArrivalBeforeDeparture = flightFilter.filterFlightsWithArrivalBeforeDeparture(flights);
+        filteredByArrivalBeforeDeparture.forEach(System.out::println);
 
-        // Фильтруем перелеты с вылетом до текущего момента времени
-        System.out.println(flightFilter.filterFlightsDepartingBeforeNow(allSegments, timeBefore));
-
-        System.out.println("-----имеются сегменты с датой прилёта раньше даты вылета---");
-
-        // Фильтруем перелеты с сегментами, где дата прилета раньше даты вылета
-        System.out.println(flightFilter.filterFlightsWithArrivalBeforeDeparture(allSegments));
-
-        System.out.println("-----------------------------");
-
-        // Фильтруем перелеты с излишним временем на земле
-        System.out.println(flightFilter.filterFlightsWithExcessiveGroundTime(allSegments));
+        // Применяем и выводим результаты фильтра "общее время, проведённое на земле превышает два часа"
+        System.out.println("\nПерелеты, исключенные фильтром 'общее время, проведённое на земле превышает два часа':");
+        List<Flight> filteredByExcessiveGroundTime = flightFilter.filterFlightsWithExcessiveGroundTime(flights);
+        filteredByExcessiveGroundTime.forEach(System.out::println);
     }
-//        List<Flight> flights = FlightBuilder.createFlights();
-//        FlightFilter beforeNowFilter = new DepartingBeforeNowFilter(LocalDateTime.now());
-//        FlightFilter arrivalBeforeDepartureFilter = new ArrivalBeforeDepartureFilter();
-//        FlightFilter excessiveGroundTimeFilter = new ExcessiveGroundTimeFilter();
-//
-//        System.out.println("Filtered by Departing Before Now:");
-//        List<Flight> filteredByDeparture = beforeNowFilter.filterFlights(flights);
-//        filteredByDeparture.forEach(System.out::println);
-//
-//        System.out.println("\nFiltered by Arrival Before Departure:");
-//        List<Flight> filteredByArrival = arrivalBeforeDepartureFilter.filterFlights(flights);
-//        filteredByArrival.forEach(System.out::println);
-//
-//        System.out.println("\nFiltered by Excessive Ground Time:");
-//        List<Flight> filteredByGroundTime = excessiveGroundTimeFilter.filterFlights(flights);
-//        filteredByGroundTime.forEach(System.out::println);
-}
+    }
+
 
