@@ -11,45 +11,6 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) {
-
-//        // Создаем список перелетов
-//        List<Flight> flights = FlightBuilder.createFlights();
-//
-//        // Создаем объект FlightFilterImpl
-//        FlightFilter flightFilter = new FlightFilterImpl();
-//
-//        // Получаем текущее время
-//        LocalDateTime timeBefore = LocalDateTime.now();
-//
-//        // Выводим информацию о перелете
-//        System.out.println("Перелет:");
-//        for (Flight flight : flights) {
-//            for (Segment segment : flight.getSegments()) {
-//                System.out.println("Вылет: " + segment.getDepartureDate() + ", Прилет: " + segment.getArrivalDate());
-//            }
-//        }
-//
-//        System.out.println("-----вылет до текущего момента времени----");
-//
-//        // Получаем список сегментов из списка перелетов
-//        List<Segment> allSegments = flights.stream()
-//                .flatMap(flight -> flight.getSegments().stream())
-//                .collect(Collectors.toList());
-//
-//        // Фильтруем перелеты с вылетом до текущего момента времени
-//        System.out.println(flightFilter.filterFlightsDepartingBeforeNow(allSegments, timeBefore));
-//
-//        System.out.println("-----имеются сегменты с датой прилёта раньше даты вылета---");
-//
-//        // Фильтруем перелеты с сегментами, где дата прилета раньше даты вылета
-//        System.out.println(flightFilter.filterFlightsWithArrivalBeforeDeparture(allSegments));
-//
-//        System.out.println("-----------------------------");
-//
-//        // Фильтруем перелеты с излишним временем на земле
-//        System.out.println(flightFilter.filterFlightsWithExcessiveGroundTime(allSegments));
-//    }
-
         List<Flight> flights = FlightBuilder.createFlights();
         FlightFilter flightFilter = new FlightFilterImpl();
 
